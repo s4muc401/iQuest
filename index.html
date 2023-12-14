@@ -99,7 +99,7 @@
     <body>
         <header>
             <strong>i</strong>Quest
-            <nav>
+            <nav id="menu_top">
                 <a href="#" onclick="Finalizar()">Finalizar</a>
             </nav>
         </header>
@@ -118,6 +118,7 @@
         <footer><strong>Equipe Infra</strong></footer>
 
         <script>
+            let menu_top = document.getElementById("menu_top");
             let container_quiz = document.getElementById("container-quiz");
             let question_text = document.getElementById("question");
 
@@ -158,6 +159,7 @@
             function Finalizar() {
                 main.style.display = "none";
                 container_quiz.style.marginTop = "39px";
+                menu_top.style.display = "none";
             }
         </script>
     </body>
