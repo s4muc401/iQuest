@@ -37,13 +37,16 @@
                 font-family: helvatica;
             }
 
+            header nav {
+                float: right;
+            }
+
             header nav a {
                 text-decoration: none;
                 color: #171c2d;
                 font-size: 0.6em;
                 position: relative;
-                left: 75%;
-                bottom: 33px;
+                right: 10%;
             }
 
             article {
@@ -58,6 +61,7 @@
                 border: 2px solid #000;
                 margin-left: 5%;
                 margin-top: 30px;
+                caret-color: #f2d16d;
             }
 
             article section button {
@@ -100,7 +104,7 @@
         <header>
             <strong>i</strong>Quest
             <nav id="menu_top">
-                <a href="#" onclick="Finalizar()">Finalizar</a>
+                <a id="btnMenuFinalizar" href="#" onclick="Finish()">Finalizar</a>
             </nav>
         </header>
 
@@ -115,17 +119,23 @@
             <h1>Exercício</h1>
         </section>
 
-        <footer><strong>Equipe Infra</strong></footer>
+        <footer id="footer"><strong>Equipe Infra</strong></footer>
 
         <script>
-            let menu_top = document.getElementById("menu_top");
+            let btnMenuFinalizar = document.getElementById("btnMenuFinalizar");
+            let footer = document.getElementById("footer");
             let container_quiz = document.getElementById("container-quiz");
             let question_text = document.getElementById("question");
 
             let numberOfQuestion = 0;
+            let Questions = [];
 
             function AddQuestion() {
                 numberOfQuestion+=1;
+                Questions.push(question_text.value);
+                localStorage.quizInStorage = Questions;
+
+                console.log(Questions);
                 let numberQuestion = document.createElement("h4");
                 numberQuestion.textContent = `QUESTÃO 0${numberOfQuestion}`;
                 container_quiz.appendChild(numberQuestion);
@@ -154,13 +164,61 @@
                 input.style.borderWidth = "2px";
                 input.style.borderRadius = "8px";
                 input.textContent = input.value;
+
+                question_text.value = "";
             }
 
-            function Finalizar() {
+            function Finish() {
+                localStorage.quizInStorage = "";
                 main.style.display = "none";
                 container_quiz.style.marginTop = "39px";
-                menu_top.style.display = "none";
+                btnMenuFinalizar.textContent = "Equipe Infra";
+                btnMenuFinalizar.style.color = "#f2d16d";
+                btnMenuFinalizar.style.fontSize = "0.45em";
+                footer.style.display = "none";
             }
+
+            function LoadQuiz() {
+                if (localStorage.getItem("quizInStorage")) {
+                    console.log("OPAN! TEMOS ALGO AQUI EMMM :>");
+                    let storage = localStorage.getItem("quizInStorage");
+                    Questions = storage.split(",");
+
+                    for (let element of Questions) {
+                        numberOfQuestion+=1;
+                        
+                        let numberQuestion = document.createElement("h4");
+                        numberQuestion.textContent = `QUESTÃO 0${numberOfQuestion}`;
+                        container_quiz.appendChild(numberQuestion);
+
+                        numberQuestion.style.color = "#f2d16d";
+                        numberQuestion.style.marginTop = "5px";
+
+                        let element_title = document.createElement("textarea");
+                        element_title.innerHTML = `${element}`;
+                        container_quiz.appendChild(element_title);
+
+                        element_title.style.width = "99%";
+                        element_title.style.height = "50px";
+                        element_title.style.fontSize = "0.9em";
+                        element_title.style.border = "none";
+                        element_title.style.marginTop = "8px";
+
+                        let input = document.createElement("textarea");
+                        container_quiz.appendChild(input);
+
+                        input.style.width = "99%";
+                        input.style.height = "120px";
+                        input.placeholder = " Resposta Aqui...";
+                        input.style.marginBottom = "40px";
+                        input.style.borderStyle = "solid";
+                        input.style.borderWidth = "2px";
+                        input.style.borderRadius = "8px";
+                        input.textContent = input.value;
+                    }
+                }
+            }
+            window.addEventListener("load",LoadQuiz);
         </script>
     </body>
 </html>
